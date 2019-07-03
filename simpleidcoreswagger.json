@@ -298,27 +298,27 @@
       "type": "object",
       "properties": {
 		"ClientCode": {
-		  "required" : true,
+		 
           "type": "string",
           "description": "The client code. This information identifies the owner of the application making the request. "
         },
 		"AccountCode": {
-		 "required" : true,
+		 
           "type": "string",
           "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
 		"Person": {
-		"required" : false,
+	
          "$ref": "#/definitions/PersonInformation",
           "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
         },
         "ServiceProvider": {
-		 "required" : false,
+		 
          "$ref": "#/definitions/ServiceProvider",
 		 "description": "Information about the service provider executing the delete operation."
         },
 		"Transaction": {
-		"required" : false,
+		
          "$ref": "#/definitions/Transaction"
         },
         "Faces": {
@@ -334,29 +334,29 @@
       "type": "object",
      "properties": {
 	  "ClientCode": {
-		  "required" : true,
+		
           "type": "string",
           "description": "The client code. This information identifies the owner of the application making the request. "
         },
 		"AccountCode": {
-		  "required" : true,
+		 
           "type": "string",
           "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
 		"Person": {
-		"required" : false,
+		
          "$ref": "#/definitions/Person",
           "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
         },
         "ServiceProvider": {
-		 "required" : false,
+		
          "$ref": "#/definitions/ServiceProvider",
 		 "description": "Information about the service provider executing the delete operation."
         },
 		"Transaction": {
-		"required" : false,
+		
          "$ref": "#/definitions/Transaction"
-        }
+        },
         "Face": {
           "$ref": "#/definitions/FaceRequest"
         }
@@ -367,27 +367,22 @@
       "type": "object",
       "properties": {
 	   "ClientCode": {
-	     "required" : true,
           "type": "string",
           "description": "The client code. This information identifies the owner of the application making the request. "
         },
 		"AccountCode": {
-		  "required" : true,
           "type": "string",
           "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
         "Person": {
-		"required" : true,
          "$ref": "#/definitions/Person",
           "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
         },
         "ServiceProvider": {
-		 "required" : false,
          "$ref": "#/definitions/ServiceProvider",
 		 "description": "Information about the service provider executing the delete operation."
         },
 		"Transaction": {
-		"required" : false,
          "$ref": "#/definitions/Transaction"
         }
       }
@@ -397,17 +392,14 @@
       "type": "object",
       "properties": {
 	   "ClientCode": {
-	     "required" : true,
           "type": "string",
           "description": "The client code. This information identifies the owner of the application making the request. "
         },
 		"AccountCode": {
-		  "required" : true,
           "type": "string",
           "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
         "Person": {
-		"required" : true,
          "$ref": "#/definitions/Person",
           "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
         },
@@ -419,18 +411,15 @@
       "type": "object",
       "properties": {
 	   "ClientCode": {
-	     "required" : true,
           "type": "string",
           "description": "The client code. This information identifies the owner of the application making the request. "
         },
 		"AccountCode": {
-		  "required" : true,
           "type": "string",
           "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
         "Person": {
-		"required" : true,
-         "$ref": "#/definitions/Person",
+         "$ref": "#/definitions/PersonInformation",
           "description": "Information about the person. Only the PersonID is used by SimpleID"
         }
       }
@@ -493,27 +482,27 @@
 		"CustomField4": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField5": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField6": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField7": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField8": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField9": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
-        }
+        },
 		"CustomField10": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the person"
@@ -536,7 +525,7 @@
           "type": "string",
           "description": "Unique identifier of the operator that is using the application to make the request"
         },
-		"OperatorCode": {
+		"OperatorName": {
           "type": "string",
           "description": "Name of the operator that is using the application to make the request"
         },
@@ -555,27 +544,27 @@
 		"CustomField4": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField5": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField6": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField7": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField8": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField9": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
-        }
+        },
 		"CustomField10": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the service provider"
@@ -614,27 +603,27 @@
 		"CustomField4": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField5": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField6": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField7": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField8": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField9": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
-        }
+        },
 		"CustomField10": {
           "type": "string",
           "description": "Any custom information that the application wants to store for the transaction"
@@ -754,7 +743,7 @@
       }
     },
 	
-    "SimpleIDAPICheckIDResponse": {
+    "SimpleIDAPIFaceAnalysisResponse": {
       "type": "object",
       "properties": {
         "ReturnCode": {
@@ -776,7 +765,7 @@
       }
     },
 	
-	 "SimpleIDAPIDeleteResponse": {
+	 "SimpleIDAPICheckIDResponse": {
       "type": "object",
       "properties": {
         "ReturnCode": {
