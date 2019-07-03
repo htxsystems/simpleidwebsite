@@ -320,7 +320,7 @@
 		"Transaction": {
 		"required" : false,
          "$ref": "#/definitions/Transaction"
-        }
+        },
         "Faces": {
 		 "type": "array",
           "items": {
