@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is the API definition of SimpleID Core, the multibiometric solution from HTX Systems",
-    "version": "2.0.0",
+    "description": "This is the API definition of SimpleID Core, the facial recognition solution from HTX Systems",
+    "version": "1.0.0",
     "title": "SimpleID Core API ",
     "x-logo": {
       "url": "../Content/images/logo-htx.png",
@@ -21,13 +21,13 @@
     "https"
   ],
   "paths": {
-    "/simpleid/analyze": {
+    "/simpleidcore/analyze": {
       "post": {
         "tags": [
           "SimpleID"
         ],
         "summary": "Analyzes a face image",
-        "description": "This method is responsible for processing an image and returning information about the bigger face (if any) found. This method can be used to perform quality check",
+        "description": "This method is responsible for processing an image and returning information about the biggest face (if any) found. It can be used to perform quality check",
         "operationId": "analyze",
         "consumes": [
           "application/json"
@@ -42,7 +42,7 @@
             "description": "Face to be processed",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AnalyzeImageModel"
+              "$ref": "#/definitions/AnalyzeFaceImageModel"
             }
           }
         ],
@@ -50,7 +50,7 @@
           "200": {
             "description": "Operation executed successfully",
             "schema": {
-              "$ref": "#/definitions/FaceAnalysisResponse"
+              "$ref": "#/definitions/SimpleIDAPIFaceAnalysisResponse"
             }
           },
           "400": {
@@ -91,7 +91,7 @@
           "200": {
             "description": "Operation executed successfully",
             "schema": {
-              "$ref": "#/definitions/SimpleIDCoreAPIResponse"
+              "$ref": "#/definitions/SimpleIDAPIRegisterResponse"
             }
           },
           "400": {
@@ -103,7 +103,7 @@
         }
       }
     },
-    "/simpleid/searchface": {
+    "/simpleid/search": {
       "post": {
         "tags": [
           "SimpleID"
@@ -132,48 +132,7 @@
           "200": {
             "description": "Operation executed successfully",
             "schema": {
-              "$ref": "#/definitions/SimpleIDCoreAPIResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/simpleid/searchfingerprint": {
-      "post": {
-        "tags": [
-          "SimpleID"
-        ],
-        "summary": "Searches a fingerprint",
-        "description": "This method performs a biometric (fingerprint) search against registered persons. If PersonID is supplied, a VERIFICATION (1:1) operation is performed, otherwise a IDENTIFICATION (1:N) is performed. ",
-        "operationId": "searchfingerprint",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Information used to perform the search operation",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/FingerSearchPersonModel"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Operation executed successfully",
-            "schema": {
-              "$ref": "#/definitions/SimpleIDCoreAPIResponse"
+              "$ref": "#/definitions/SimpleIDAPISearchResponse"
             }
           },
           "400": {
@@ -214,7 +173,7 @@
           "200": {
             "description": "Operation executed successfully",
             "schema": {
-              "$ref": "#/definitions/SimpleIDCoreAPIResponse"
+              "$ref": "#/definitions/SimpleIDAPIDeleteResponse"
             }
           },
           "400": {
@@ -255,7 +214,48 @@
           "200": {
             "description": "Operation executed successfully",
             "schema": {
-              "$ref": "#/definitions/SimpleIDCoreAPIResponse"
+              "$ref": "#/definitions/SimpleIDAPIGetPersonResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+	"/simpleid/check": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Checks if a PersonID is registered",
+        "description": "",
+        "operationId": "check",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Information used to perform the operation",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckIDPersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation executed successfully",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDAPICheckIDResponse"
             }
           },
           "400": {
@@ -277,73 +277,166 @@
     }
   },
   "definitions": {
-    "AnalyzeImageModel": {
+    "AnalyzeFaceImageModel": {
       "type": "object",
       "properties": {
+	  "ClientCode": {
+          "type": "string",
+          "description": "The client code. This information identifies the owner of the application making the request. "
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
+        },
         "Face": {
           "$ref": "#/definitions/FaceRequest"
         }
       }
     },
-    "RegisterPersonModel": {
+    
+	"RegisterPersonModel": {
       "type": "object",
       "properties": {
-        "AccountID": {
+		"ClientCode": {
+		  "required" : true,
           "type": "string",
-          "description": "ID of the account that will store this person. If null, a default 'htx' account will be used"
+          "description": "The client code. This information identifies the owner of the application making the request. "
         },
-        "PersonID": {
+		"AccountCode": {
+		 "required" : true,
           "type": "string",
-          "description": "Unique ID of the person. If null, the system will generate a GUID to be used as unique ID. If the supplied ID already exists, an UPDATE operation will be executed"
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
-        "CustomField1": {
-          "type": "string",
-          "description": "Custom information that is used by the application"
+		"Person": {
+		"required" : false,
+         "$ref": "#/definitions/PersonInformation",
+          "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
         },
-        "CustomField2": {
-          "type": "string",
-          "description": "Custom information that is used by the application"
+        "ServiceProvider": {
+		 "required" : false,
+         "$ref": "#/definitions/ServiceProvider",
+		 "description": "Information about the service provider executing the delete operation."
         },
-        "CustomField3": {
-          "type": "string",
-          "description": "Custom information that is used by the application"
-        },
-        "Fingers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FingerRequest"
-          }
-        },
+		"Transaction": {
+		"required" : false,
+         "$ref": "#/definitions/Transaction"
+        }
         "Faces": {
-          "type": "array",
+		 "type": "array",
           "items": {
             "$ref": "#/definitions/FaceRequest"
           }
-        },
-        "IgnoreSearch": {
-          "type": "boolean",
-          "description": "If SimpleID is configured to perform duplication check during registration, passing True on this field will force SimpleID to ignore any duplicated registers"
         }
       }
     },
 
     "FaceSearchPersonModel": {
       "type": "object",
-      "properties": {
-        "AccountID": {
+     "properties": {
+	  "ClientCode": {
+		  "required" : true,
           "type": "string",
-          "description": "ID of the account on which the search operation will be performed. If null, a default 'htx' account will be used"
+          "description": "The client code. This information identifies the owner of the application making the request. "
         },
-        "PersonID": {
+		"AccountCode": {
+		  "required" : true,
           "type": "string",
-          "description": "Unique ID of the person. If null, the whole database will be searched (1:N), otherwise a 1:1 operation will be performed"
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
         },
+		"Person": {
+		"required" : false,
+         "$ref": "#/definitions/Person",
+          "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
+        },
+        "ServiceProvider": {
+		 "required" : false,
+         "$ref": "#/definitions/ServiceProvider",
+		 "description": "Information about the service provider executing the delete operation."
+        },
+		"Transaction": {
+		"required" : false,
+         "$ref": "#/definitions/Transaction"
+        }
         "Face": {
           "$ref": "#/definitions/FaceRequest"
         }
       }
     },
-    "FaceRequest": {
+
+    "DeletePersonModel": {
+      "type": "object",
+      "properties": {
+	   "ClientCode": {
+	     "required" : true,
+          "type": "string",
+          "description": "The client code. This information identifies the owner of the application making the request. "
+        },
+		"AccountCode": {
+		  "required" : true,
+          "type": "string",
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
+        },
+        "Person": {
+		"required" : true,
+         "$ref": "#/definitions/Person",
+          "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
+        },
+        "ServiceProvider": {
+		 "required" : false,
+         "$ref": "#/definitions/ServiceProvider",
+		 "description": "Information about the service provider executing the delete operation."
+        },
+		"Transaction": {
+		"required" : false,
+         "$ref": "#/definitions/Transaction"
+        }
+      }
+    },
+    
+	"GetPersonModel": {
+      "type": "object",
+      "properties": {
+	   "ClientCode": {
+	     "required" : true,
+          "type": "string",
+          "description": "The client code. This information identifies the owner of the application making the request. "
+        },
+		"AccountCode": {
+		  "required" : true,
+          "type": "string",
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
+        },
+        "Person": {
+		"required" : true,
+         "$ref": "#/definitions/Person",
+          "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
+        },
+      }
+    },
+
+	
+	"CheckIDPersonModel": {
+      "type": "object",
+      "properties": {
+	   "ClientCode": {
+	     "required" : true,
+          "type": "string",
+          "description": "The client code. This information identifies the owner of the application making the request. "
+        },
+		"AccountCode": {
+		  "required" : true,
+          "type": "string",
+          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
+        },
+        "Person": {
+		"required" : true,
+         "$ref": "#/definitions/Person",
+          "description": "Information about the person. Only the PersonID is used by SimpleID"
+        }
+      }
+    },
+	
+	"FaceRequest": {
       "type": "object",
       "properties": {
         "Image": {
@@ -351,7 +444,8 @@
         }
       }
     },
-    "FaceImage": {
+    
+	"FaceImage": {
       "type": "object",
       "properties": {
         "Format": {
@@ -369,187 +463,298 @@
       }
     },
 
-    "FingerSearchPersonModel": {
-      "type": "object",
-      "properties": {
-        "AccountID": {
-          "type": "string",
-          "description": "ID of the account on which the search operation will be performed. If null, a default 'htx' account will be used"
-        },
-        "PersonID": {
-          "type": "string",
-          "description": "Unique ID of the person. If null, the whole database will be searched (1:N), otherwise a 1:1 operation will be performed"
-        },
-        "Finger": {
-          "$ref": "#/definitions/FingerRequest"
-        }
-      }
-    },
-    "FingerRequest": {
-      "type": "object",
-      "properties": {
-        "Position": {
-          "type": "integer",
-          "description": "Finger position. 0 for Unknown, 1 for Right Thumb, 2 for Right Index ... 5 for Right Little, 6 for Left Thumb and so on"
-        },
-        "Exception": {
-          "type": "integer",
-          "description": "Reason a finger was not captured. 0 for None, 1 for AMPUTADED, 2 for SCAR, 3 for UNAVAILABLE, 4 for BAD_FINGER"
-        },
-        "Template": {
-          "$ref": "#/definitions/FingerprintTemplate"
-        },
-        "Images": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FingerprintImage"
-          }
-        }
-      }
-    },
-    "FingerprintTemplate": {
-      "type": "object",
-      "properties": {
-        "Format": {
-          "type": "integer",
-          "description": "Template format. 0 for Unknown, 1 for ISO 19794-2, 2 ANSI/378"
-        },
-        "Data": {
-          "type": "string",
-          "description": "Fingerprint template in Base64 format"
-        }
-      }
-    },
-    "FingerprintImage": {
-      "type": "object",
-      "properties": {
-        "Format": {
-          "type": "integer",
-          "description": "Template format. 0 for Unknown, 1 for WSQ, 2 ISO 19794-4, 3 for Bitmap"
-        },
-        "Type": {
-          "type": "integer",
-          "description": "Fingerprint image capture type. Not used on the current version of the API"
-        },
-        "NFIQ": {
-          "type": "integer",
-          "description": "NFIQ of this image. 0 for Unknown, from 1 (Very Good) to 5 (Poor)"
-        },
-        "DPI": {
-          "type": "integer",
-          "description": "Image resolution in DPI. This field is ignored and only 500DPI images are accepted"
-        },
-        "Data": {
-          "type": "string",
-          "description": "Fingerprint image in Base64 format"
-        }
-      }
-    },
-
-
-
-    "DeletePersonModel": {
-      "type": "object",
-      "properties": {
-        "AccountID": {
-          "type": "string",
-          "description": "ID of the account on which the delete operation will be performed"
-        },
-        "PersonID": {
-          "type": "string",
-          "description": "Unique ID of the person to be deleted."
-        }
-      }
-    },
-    "GetPersonModel": {
-      "type": "object",
-      "properties": {
-        "AccountID": {
-          "type": "string",
-          "description": "ID of the account on which the operation will be performed"
-        },
-        "PersonID": {
-          "type": "string",
-          "description": "Unique ID of the person to be returned."
-        },
-        "CustomField1": {
-          "type": "string",
-          "description": "Custom information that is used by the application"
-        }
-      }
-    },
-
-
-
-    "SimpleIDCoreAPIResponse": {
-      "type": "object",
-      "properties": {
-        "TransactionInformation": {
-          "$ref": "#/definitions/TransactionInformation"
-        }
-      }
-    },
-    "TransactionInformation": {
-      "type": "object",
-      "properties": {
-        "ReturnCode": {
-          "type": "integer",
-          "description": "Return code"
-        },
-        "Message": {
-          "type": "string",
-          "description": "Message describing the return code"
-        },
-        "TransactionID": {
-          "type": "string",
-          "description": "ID of the transaction generated by the systems"
-        },
-        "AccountID": {
-          "type": "string",
-          "description": "Account on which the operation was performed"
-        },
-        "Persons": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Person"
-          }
-        }
-      }
-    },
-    "Person": {
+	"PersonInformation": {
       "type": "object",
       "properties": {
         "PersonID": {
           "type": "string",
           "description": "Unique ID of the person"
         },
+		"Name": {
+          "type": "string",
+          "description": "Name of the person"
+        },
+		"IDDocNumber": {
+          "type": "string",
+          "description": "Number of the identification document"
+        },
         "CustomField1": {
           "type": "string",
-          "description": "Custom information that is used by the application"
+          "description": "Any custom information that the application wants to store for the person"
         },
         "CustomField2": {
           "type": "string",
-          "description": "Custom information that is used by the application"
+          "description": "Any custom information that the application wants to store for the person"
         },
         "CustomField3": {
           "type": "string",
-          "description": "Custom information that is used by the application"
+          "description": "Any custom information that the application wants to store for the person"
         },
-        "Fingers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FingerRequest"
-          }
+		"CustomField4": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField5": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField6": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField7": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField8": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField9": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+		"CustomField10": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+      }
+    },
+	
+	"ServiceProvider": {
+      "type": "object",
+      "properties": {
+        "Code": {
+          "type": "string",
+          "description": "Unique identifier"
         },
-        "Faces": {
-          "type": "array",
+		"Name": {
+          "type": "string",
+          "description": "Name of the service provider"
+        },
+		"OperatorCode": {
+          "type": "string",
+          "description": "Unique identifier of the operator that is using the application to make the request"
+        },
+		"OperatorCode": {
+          "type": "string",
+          "description": "Name of the operator that is using the application to make the request"
+        },
+        "CustomField1": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        },
+        "CustomField2": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        },
+        "CustomField3": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        },
+		"CustomField4": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField5": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField6": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField7": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField8": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField9": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+		"CustomField10": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the service provider"
+        }
+      }
+    },
+	
+	
+	"Transaction": {
+      "type": "object",
+      "properties": {
+        "TransactionID": {
+          "type": "string",
+          "description": "Unique ID of the transaction. This field is generated ty SimpleID"
+        },
+		"ExternalCode": {
+          "type": "string",
+          "description": "Identified of the request defined by the application"
+        },
+		"ServiceCode": {
+          "type": "string",
+          "description": "Identifier of the service that is being provided by the application"
+        },
+        "CustomField1": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        },
+        "CustomField2": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        },
+        "CustomField3": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        },
+		"CustomField4": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField5": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField6": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField7": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField8": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField9": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+		"CustomField10": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the transaction"
+        }
+      }
+    },
+	
+	
+	 "SimpleIDAPIRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+		"TransactionID": {
+          "type": "string",
+          "description": "Unique identifier of the request"
+        },
+        "PersonID": {
+          "type": "string",
+          "description": "Unique identifier of the registered person"
+        },
+		"SearchResults": {
+		 "type": "array",
           "items": {
-            "$ref": "#/definitions/FaceRequest"
+            "$ref": "#/definitions/SearchResult"
           }
         }
       }
     },
-    "FaceAnalysisResponse": {
+	
+    "SimpleIDAPIDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+		"TransactionID": {
+          "type": "string",
+          "description": "Unique identifier of the request"
+        },
+        "PersonID": {
+          "type": "string",
+          "description": "Unique identifier of the person"
+        },
+      }
+    },
+	
+	 "SimpleIDAPISearchResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+		"TransactionID": {
+          "type": "string",
+          "description": "Unique identifier of the request"
+        },
+        "PersonID": {
+          "type": "string",
+          "description": "Unique identifier of the person sent during the request. This is not the result of the search, it is just the PersonID information used in case of a 1:1 operation"
+        },
+		"SearchResults": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/SearchResult"
+          }
+        }
+      }
+    },
+	
+	"SimpleIDAPIGetPersonResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+		"Person": {
+		 "$ref": "#/definitions/Person"
+        }
+      }
+    },
+	
+    "SimpleIDAPICheckIDResponse": {
       "type": "object",
       "properties": {
         "ReturnCode": {
@@ -561,12 +766,67 @@
           "type": "string",
           "description": "Message describing the return code"
         },
-        "Analysis": {
-          "$ref": "#/definitions/FaceImageAnalysis"
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+        "ProcessedFace": {
+          "$ref": "#/definitions/ProcessedFace"
         }
       }
     },
-    "FaceImageAnalysis": {
+	
+	 "SimpleIDAPIDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+      }
+    },
+	
+	"Person": {
+      "type": "object",
+      "properties": {
+	   "PersonInformation": {
+	     "$ref": "#/definitions/PersonInformation"
+        },
+		"Faces": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaceRequest"
+          }
+        }
+      }
+    },
+	
+	"SearchResult": {
+      "type": "object",
+      "properties": {
+        "AutoHIT": {
+          "type": "boolean",
+          "description": "Indicates if this was an automatic HIT. "
+        },
+         "GrayAreaHIT": {
+          "type": "boolean",
+          "description": "Indicates if this hits needs human confirmation. "
+        },
+        "Person": {
+         "$ref": "#/definitions/PersonInformation",
+        },
+      }
+    },
+	
+    "ProcessedFace": {
       "type": "object",
       "properties": {
         "Yaw": {
@@ -585,20 +845,37 @@
           "type": "integer",
           "description": "Brightness level. -1 for Too Dark, 0 for Good and 1 for Too Bright"
         },
-        "Sharpness": {
+        "IsSharpnessOK": {
           "type": "boolean",
           "description": "Indicates whether the sharpness level is good or not"
         },
-        "MouthClosed": {
+        "IsMouthClosed": {
           "type": "boolean",
           "description": "Indicates if the mouth is closed"
         },
+		"IsGazeOK": {
+          "type": "boolean",
+          "description": "Indicates if person is looking forward"
+        },
+		"IsShadowAcrossFaceOK": {
+          "type": "boolean",
+          "description": "Indicates the face has no shadow accros. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
+        },
+		"HasUniformBackground": {
+          "type": "boolean",
+          "description": "Indicates the background has a uniform color. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
+        },
+		"IsWearingGlasses": {
+          "type": "boolean",
+          "description": "Indicates if the person is wearing glasses. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
+        },
+		
         "Rectangle": {
-          "description": "Location of the bigger face (if any)",
+          "description": "Location of the biggest face (if any)",
           "$ref": "#/definitions/Rectangle"
         },
         "CropRectangle": {
-          "description": "Rectangle indicating the crop region according to ISO 19794-5 format Full Frontal",
+          "description": "Rectangle indicating the crop region according to ISO 19794-5 format Full Frontal. If it is not possible to reach the standard requirements, the best possible crop will be returned",
           "$ref": "#/definitions/Rectangle"
         },
         "LeftEye": {
