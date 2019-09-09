@@ -1,1 +1,574 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Essa é a especificação da API de reconhecimento facial para operadoras de saúde, um produto da SimpleID - Identidade Confirmada!",
+    "version": "1.0.0",
+    "title": "SimpleID HI API ",
+    "x-logo": {
+      "url": "../Content/images/logo-htx.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "HTX Systems Logo"
+    }
+  },
+  "host": "demo.simpleid.com.br",
+  "tags": [
+    {
+      "name": "SimpleID",
+      "description": "SimpleID HI API"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/simpleidhi/registrar": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Cadastra um beneficiário",
+        "description": "Esse método é responsável por cadastrar um beneficiário. Caso o Identificador informado já exista, uma operação de atualização dos dados será realizada.",
+        "operationId": "registrar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requisição de cadastro",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterPersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+		  "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPIRegisterResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    },
+    "/simpleidhi/buscar": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Faz a busca de uma foto",
+        "description": "Esse método realiza uma busca facial. Se um Identificador é fornecido, uma VERIFICAÇÃO (1:1) é realizada. Caso contrário uma IDENTIFICAÇÃO (1:N) é realizada. ",
+        "operationId": "buscar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requição de busca",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FaceSearchPersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+		  "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPISearchResponse"
+            }
+          },
+         "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    },
+    "/simpleidhi/deletar": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Deleta um beneficiário do sistema",
+        "description": "",
+        "operationId": "deletar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requisição de remoção",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeletePersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPIDeleteResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    },
+    "/simpleidhi/beneficiario": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Retorna o cadastro de um beneficiário",
+        "description": "",
+        "operationId": "beneficiario",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requisição",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetPersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPIGetPersonResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    },
+	"/simpleidhi/check": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Verifica se o ID informado existe",
+        "description": "",
+        "operationId": "check",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requisição",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetPersonModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPIBaseResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKey": {
+      "type": "string",
+      "name": "apikey",
+      "description": "Chave da API. Deve ser fornecida no cabeçalho. Ex: apikey YOUR_API_KEY",
+      "in": "header"
+    },
+	 "ClientCode": {
+     "type": "string",
+      "name": "clientcode",
+      "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+      "in": "header"
+    },
+	 "AccountCode": {
+     "type": "string",
+      "name": "accountcode",
+      "description": "Código da conta na qual a requisição será processada. Ex: accountcode YOUR_ACCOUNT_CODE",
+      "in": "header"
+    }
+  },
+  "definitions": {
+	"RegisterPersonModel": {
+      "type": "object",
+      "properties": {
+		"Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+          "description": "Dados do beneficiário que será cadastro."
+        },
+        "Prestador": {
+         "$ref": "#/definitions/DadosPrestador",
+		 "description": "Dados do prestador na qual a operação está sendo executada"
+        },
+		"Transacao": {
+         "$ref": "#/definitions/DadosAtendimento",
+		 "description": "Dados referente à requisição"
+        },
+        "Faces": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaceRequest"
+          }
+        }
+		"IgnoreSearch": {
+			"type": "boolean",
+			"description": "Indica se uma busca 1:N deverá ser realizada ou não durante o cadastro. Esse parâmetro será ignorado caso a configuração global possua uma definição diferente. Consulte o administrador da conta para maiores informações"
+        },
+      }
+    },
 
+    "FaceSearchPersonModel": {
+      "type": "object",
+      "properties": {
+		"Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+          "description": "Dados do beneficiário na qual a busca será executada. Apenas o campo ID é considerado nessa operação"
+        },
+        "Prestador": {
+         "$ref": "#/definitions/DadosPrestador",
+		 "description": "Dados do prestador na qual a operação está sendo executada"
+        },
+		"Transacao": {
+         "$ref": "#/definitions/DadosAtendimento",
+		 "description": "Dados referente à requisição"
+        },
+		"Face": {
+         "$ref": "#/definitions/FaceRequest",
+		 "description": "Face a ser validada"
+        }
+      }
+    },
+
+    "DeletePersonModel": {
+       "type": "object",
+      "properties": {
+		"Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+          "description": "Dados do beneficiário a ser removido. Apenas o campo ID é considerado nessa operação"
+        },
+        "Prestador": {
+         "$ref": "#/definitions/DadosPrestador",
+		 "description": "Dados do prestador na qual a operação está sendo executada"
+        },
+		"Transacao": {
+         "$ref": "#/definitions/DadosAtendimento",
+		 "description": "Dados referente à requisição"
+        },
+    },
+    
+	"GetPersonModel": {
+       "type": "object",
+      "properties": {
+		"Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+          "description": "Dados do beneficiário. Apenas o campo ID é considerado nessa operação"
+        },
+        "Prestador": {
+         "$ref": "#/definitions/DadosPrestador",
+		 "description": "Dados do prestador na qual a operação está sendo executada"
+        },
+		"Transacao": {
+         "$ref": "#/definitions/DadosAtendimento",
+		 "description": "Dados referente à requisição"
+        },
+    },
+
+	
+	"FaceRequest": {
+      "type": "object",
+      "properties": {
+        "Image": {
+          "$ref": "#/definitions/FaceImage"
+        }
+      }
+    },
+    
+	"FaceImage": {
+      "type": "object",
+      "properties": {
+        "Dados": {
+          "type": "string",
+          "description": "Imagem da face (JPEG ou BMP) em formato base64"
+        }
+      }
+    },
+
+	"DadosBeneficiario": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "description": "Identificador único do beneficiário. Esse campo define a identidade do beneficiário na solução"
+        },
+		"Nome": {
+          "type": "string",
+          "description": "Nome do beneficiário (opcional)"
+        },
+		"CPF": {
+          "type": "string",
+          "description": "CPF do beneficiário (opcional)"
+        },
+        "DataNascimento": {
+          "type": "string",
+          "description": "Data de nascimento no formato (dd/MM/yyyy) do beneficiário. (opcional)"
+        },
+        "NomeMae": {
+          "type": "string",
+          "description": "Nome da mãe do beneficiário (opcional)"
+        },
+        "CustomField3": {
+          "type": "string",
+          "description": "Any custom information that the application wants to store for the person"
+        }
+      }
+    },
+	
+	"DadosPrestador": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "description": "Identificador único do prestador."
+        },
+		"Nome": {
+          "type": "string",
+          "description": "Nome do prestador (empresa)"
+        },
+		"Cidade": {
+          "type": "string",
+          "description": "Cidada na qual o prestador está localizado"
+        },
+		"UF": {
+          "type": "string",
+          "description": "Estado no qual o prestador está localizado"
+        },
+        "IDOperador": {
+          "type": "string",
+          "description": "Identificador único do operador (secretária, por exemplo)"
+        },
+        "NomeOperador": {
+          "type": "string",
+          "description": "Nome do operador (secretária, por exemplo)"
+        }
+      }
+    },
+	
+	
+	"DadosAtendimento": {
+      "type": "object",
+      "properties": {
+        "Codigo": {
+          "type": "string",
+          "description": "Identificador único da transação (atendimento) no sistema da operadora / prestador"
+        },
+		"CodigoProcedimento": {
+          "type": "string",
+          "description": "Identificador do procedimento no sistema da operadora / prestador"
+        }
+    },
+	
+	
+	 "SimpleIDHIAPIRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "CodigoRetorno": {
+          "type": "integer",
+          "description": "Código de retorno"
+        },
+        "Mensagem": {
+          "type": "string",
+          "description": "Mensagem descritiva do código de retorno"
+        },
+		"Conta": {
+          "type": "string",
+          "description": "Conta na qual a operação foi executada"
+        },
+		"IDRequisicao": {
+          "type": "string",
+          "description": "Identificador único da requisição. Essa propriedade é gerada pelo sistema"
+        },
+        "IDBeneficiario": {
+          "type": "string",
+          "description": "Identificador do beneficiário que foi cadastrado/atualizado"
+        },
+		"ResultadosBusca": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/SearchResultResponse"
+          }
+        }
+      }
+    },
+	
+    "SimpleIDHIAPIDeleteResponse": {
+     "type": "object",
+      "properties": {
+        "CodigoRetorno": {
+          "type": "integer",
+          "description": "Código de retorno"
+        },
+        "Mensagem": {
+          "type": "string",
+          "description": "Mensagem descritiva do código de retorno"
+        },
+		"Conta": {
+          "type": "string",
+          "description": "Conta na qual a operação foi executada"
+        },
+		"IDRequisicao": {
+          "type": "string",
+          "description": "Identificador único da requisição. Essa propriedade é gerada pelo sistema"
+        },
+        "IDBeneficiario": {
+          "type": "string",
+          "description": "Identificador do beneficiário que foi deletado"
+        }
+      }
+    },
+	
+	 "SimpleIDHIAPISearchResponse": {
+      "type": "object",
+      "properties": {
+        "CodigoRetorno": {
+          "type": "integer",
+          "description": "Código de retorno"
+        },
+        "Mensagem": {
+          "type": "string",
+          "description": "Mensagem descritiva do código de retorno"
+        },
+		"Conta": {
+          "type": "string",
+          "description": "Conta na qual a operação foi executada"
+        },
+		"IDRequisicao": {
+          "type": "string",
+          "description": "Identificador único da requisição. Essa propriedade é gerada pelo sistema"
+        },
+        "IDBeneficiario": {
+          "type": "string",
+          "description": "Identificador do beneficiário. Enviado durante a requisição"
+        },
+		"ResultadosBusca": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/SearchResultResponse"
+          }
+        }
+      }
+    },
+	
+	"SimpleIDHIAPIGetPersonResponse": {
+      "type": "object",
+      "properties": {
+        "CodigoRetorno": {
+          "type": "integer",
+          "description": "Código de retorno"
+        },
+        "Mensagem": {
+          "type": "string",
+          "description": "Mensagem descritiva do código de retorno"
+        },
+		"Conta": {
+          "type": "string",
+          "description": "Conta na qual a operação foi executada"
+        },
+		"Beneficiario": {
+           "$ref": "#/definitions/PersonResponse",
+			"description": "Dados do beneficiário"
+        }
+      }
+    },
+	
+	"PersonResponse": {
+      "type": "object",
+      "properties": {
+	   "Beneficiario": {
+	     "$ref": "#/definitions/DadosBeneficiario"
+        },
+		"Faces": {
+		 "type": "array",
+          "items": {
+            "$ref": "#/definitions/FaceRequest"
+          }
+        }
+      }
+    },
+	
+	"SearchResultResponse": {
+      "type": "object",
+      "properties": {
+        "AutoHIT": {
+          "type": "boolean",
+          "description": "Indica se a validação da face foi automática (certeza do sistema)"
+        },
+         "GrayAreaHIT": {
+          "type": "boolean",
+          "description": "Indica se a validação da face necessita de uma confirmação humana (dúvida do sistema)"
+        },
+        "Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+        },
+      }
+    }
+  }
+}
