@@ -3,7 +3,7 @@
   "info": {
     "description": "Essa é a especificação da API de reconhecimento facial para operadoras de saúde, um produto da SimpleID - Identidade Confirmada!",
     "version": "1.0.0",
-    "title": "SimpleID HI API ",
+    "title": "SimpleID Face API ",
     "x-logo": {
       "url": "../Content/images/logo-htx.png",
       "backgroundColor": "#FFFFFF",
@@ -13,8 +13,8 @@
   "host": "demo.simpleid.com.br",
   "tags": [
     {
-      "name": "SimpleID",
-      "description": "SimpleID HI API"
+      "name": "SimpleID Face",
+      "description": "SimpleID Face API"
     }
   ],
   "schemes": [
@@ -306,6 +306,63 @@
           }
         }
       }
+    },
+	"/simpleidhi/atualizaratendimento": {
+      "post": {
+        "tags": [
+          "SimpleID"
+        ],
+        "summary": "Atualiza uma transação com os dados da guia",
+        "description": "",
+        "operationId": "atualizaratendimento",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+		{
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Código da conta na qual a requisição será processada. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados da requisição",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateTransactionModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Requisição processada com sucesso",
+            "schema": {
+              "$ref": "#/definitions/SimpleIDHIAPIBaseResponse"
+            }
+          },
+          "400": {
+            "description": "Requisição fora do padrão esperado"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
@@ -339,7 +396,7 @@
             "$ref": "#/definitions/FaceRequest"
           }
         },
-		"IgnoreSearch": {
+		"IgnorarBusca": {
 			"type": "boolean",
 			"description": "Indica se uma busca 1:N deverá ser realizada ou não durante o cadastro. Esse parâmetro será ignorado caso a configuração global possua uma definição diferente. Consulte o administrador da conta para maiores informações"
         },
@@ -403,12 +460,34 @@
         },
 		}
 	},
+	
+	"UpdateTransactionModel": {
+       "type": "object",
+      "properties": {
+		"Beneficiario": {
+         "$ref": "#/definitions/DadosBeneficiario",
+          "description": "Dados do beneficiário. Apenas o campo ID é considerado nessa operação"
+        },
+        "Prestador": {
+         "$ref": "#/definitions/DadosPrestador",
+		 "description": "Dados do prestador na qual a operação está sendo executada"
+        },
+		"Transacao": {
+         "$ref": "#/definitions/DadosAtendimento",
+		 "description": "Dados referente à requisição"
+        },
+		"IDRequisicao": {
+          "type": "string",
+          "description": "Identificador único da requisição que foi gerado pelo sistema"
+        },
+	}
+	},
 
 	
 	"FaceRequest": {
       "type": "object",
       "properties": {
-        "Image": {
+        "Imagem": {
           "$ref": "#/definitions/FaceImage"
         }
       }
@@ -484,13 +563,17 @@
 	"DadosAtendimento": {
       "type": "object",
       "properties": {
-        "Codigo": {
+        "CodigoGuia": {
           "type": "string",
-          "description": "Identificador único da transação (atendimento) no sistema da operadora / prestador"
+          "description": "Identificador único da autorização (número da guia) no sistema da operadora / prestador"
         },
 		"CodigoProcedimento": {
           "type": "string",
           "description": "Identificador do procedimento no sistema da operadora / prestador"
+        },
+		"Justificativa": {
+          "type": "string",
+          "description": "Justificativa para a realização/não realização da validação facial"
         }
 		}
 	},
