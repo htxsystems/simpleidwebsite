@@ -40,7 +40,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
@@ -98,7 +98,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
@@ -155,7 +155,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
@@ -212,7 +212,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
@@ -269,7 +269,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
@@ -326,7 +326,7 @@
             "in": "header",
             "name": "clientcode",
 			"type" : "string",
-            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientocde YOUR_CLIENT_CODE",
+            "description": "Código do cliente (empresa) dentro da plataforma. Ex: clientcode YOUR_CLIENT_CODE",
             "required": true,
             
 		},
