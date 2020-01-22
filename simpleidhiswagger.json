@@ -84,7 +84,7 @@
           "SimpleID"
         ],
         "summary": "Faz a busca de uma foto",
-        "description": "Esse método realiza uma busca facial. Se um Identificador é fornecido, uma VERIFICAÇÃO (1:1) é realizada. Caso contrário uma IDENTIFICAÇÃO (1:N) é realizada. ",
+        "description": "Esse método realiza uma validação facial comparando a foto enviada com aquela cadastrada para o identificador informado. ",
         "operationId": "buscar",
         "consumes": [
           "application/json"
@@ -418,6 +418,10 @@
          "$ref": "#/definitions/DadosAtendimento",
 		 "description": "Dados referente à requisição"
         },
+		"Justificativa": {
+         "$ref": "#/definitions/DadosJustificativa",
+		 "description": "Dados referente à justificativa. Caso a requisição de busca seja enviada possua uma imagem, esse objeto será ignorado. Caso a requisição não possua uma imagem, o envio desse objeto é obrigatório."
+        },
 		"Face": {
          "$ref": "#/definitions/FaceRequest",
 		 "description": "Face a ser validada"
@@ -542,7 +546,7 @@
         },
 		"Cidade": {
           "type": "string",
-          "description": "Cidada na qual o prestador está localizado"
+          "description": "Cidade na qual o prestador está localizado"
         },
 		"UF": {
           "type": "string",
@@ -571,10 +575,20 @@
           "type": "string",
           "description": "Identificador do procedimento no sistema da operadora / prestador"
         },
-		"Justificativa": {
+		}
+	},
+	
+	"DadosJustificativa": {
+      "type": "object",
+      "properties": {
+        "Codigo": {
           "type": "string",
-          "description": "Justificativa para a realização/não realização da validação facial"
-        }
+          "description": "Identificador da justificativa conforme cadastro prévio no sistema"
+        },
+		"Comentarios": {
+          "type": "string",
+          "description": "Comentários do operador"
+        },
 		}
 	},
 	
@@ -626,7 +640,8 @@
 		 "type": "array",
           "items": {
             "$ref": "#/definitions/SearchResultResponse"
-          }
+          },
+		  "description": "Esse campo sempre irá retornar vazio na atual versão do sistema."
         }
       }
     },
