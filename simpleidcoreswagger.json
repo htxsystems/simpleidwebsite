@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is the API definition of SimpleID Core, the facial recognition solution from HTX Systems",
+    "description": "This is the API definition of SimpleID Core, the facial recognition solution from SimpleID",
     "version": "1.0.0",
     "title": "SimpleID Core API ",
     "x-logo": {
@@ -10,7 +10,7 @@
       "altText": "HTX Systems Logo"
     }
   },
-  "host": "YOUR-DOMAIN.COM",
+  "host": "demo.simpleid.com.br",
   "tags": [
     {
       "name": "SimpleID",
@@ -21,54 +21,13 @@
     "https"
   ],
   "paths": {
-    "/simpleidcore/analyze": {
-      "post": {
-        "tags": [
-          "SimpleID"
-        ],
-        "summary": "Analyzes a face image",
-        "description": "This method is responsible for processing an image and returning information about the biggest face (if any) found. It can be used to perform quality check",
-        "operationId": "analyze",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Face to be processed",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AnalyzeFaceImageModel"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Operation executed successfully",
-            "schema": {
-              "$ref": "#/definitions/SimpleIDAPIFaceAnalysisResponse"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/simpleid/register": {
       "post": {
         "tags": [
           "SimpleID"
         ],
         "summary": "Registers a new person",
-        "description": "This method is responsible for registering a new person. If the supplied PersonID already exists, an UPDATE operation will be performed. It guarantees that only one face is registered per account. This means that the same person (face) cannot be registered on the same account under two different IDs",
+        "description": "This method is responsible for registering a new person. If the supplied PersonID already exists, an UPDATE operation will be performed.",
         "operationId": "register",
         "consumes": [
           "application/json"
@@ -78,9 +37,25 @@
         ],
         "parameters": [
           {
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Client code. This code if supplied by SimpleID. Ex: clientcode YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Account code. Each account is considered a tenant inside the API. If your application is going to be deployed to different clients that don't share a common database, you can use this field to separate them. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
+		  {
             "in": "body",
             "name": "body",
-            "description": "Information of the person to be inserted",
+            "description": "Information of the person to be inserted/updated",
             "required": true,
             "schema": {
               "$ref": "#/definitions/RegisterPersonModel"
@@ -109,7 +84,7 @@
           "SimpleID"
         ],
         "summary": "Searches a face",
-        "description": "This method performs a biometric (facial) search against registered persons. If PersonID is supplied, a VERIFICATION (1:1) operation is performed, otherwise a IDENTIFICATION (1:N) is performed. ",
+        "description": "This method performs a biometric (facial) search against registered persons. If PersonID is supplied, a VERIFICATION (1:1) operation is performed, otherwise a IDENTIFICATION (1:N) is performed. In current version only 1:1 operation is guaranteed to work. ",
         "operationId": "searchface",
         "consumes": [
           "application/json"
@@ -118,6 +93,22 @@
           "application/json"
         ],
         "parameters": [
+		 {
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Client code. This code if supplied by SimpleID. Ex: clientcode YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Account code. Each account is considered a tenant inside the API. If your application is going to be deployed to different clients that don't share a common database, you can use this field to separate them. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
           {
             "in": "body",
             "name": "body",
@@ -159,6 +150,22 @@
           "application/json"
         ],
         "parameters": [
+		 {
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Client code. This code if supplied by SimpleID. Ex: clientcode YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Account code. Each account is considered a tenant inside the API. If your application is going to be deployed to different clients that don't share a common database, you can use this field to separate them. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
           {
             "in": "body",
             "name": "body",
@@ -200,6 +207,22 @@
           "application/json"
         ],
         "parameters": [
+		 {
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Client code. This code if supplied by SimpleID. Ex: clientcode YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Account code. Each account is considered a tenant inside the API. If your application is going to be deployed to different clients that don't share a common database, you can use this field to separate them. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
           {
             "in": "body",
             "name": "body",
@@ -241,6 +264,22 @@
           "application/json"
         ],
         "parameters": [
+		 {
+            "in": "header",
+            "name": "clientcode",
+			"type" : "string",
+            "description": "Client code. This code if supplied by SimpleID. Ex: clientcode YOUR_CLIENT_CODE",
+            "required": true,
+            
+		},
+		{
+            "in": "header",
+            "name": "accountcode",
+			"type" : "string",
+             "description": "Account code. Each account is considered a tenant inside the API. If your application is going to be deployed to different clients that don't share a common database, you can use this field to separate them. Ex: accountcode YOUR_ACCOUNT_CODE",
+            "required": true,
+            
+		},
           {
             "in": "body",
             "name": "body",
@@ -271,55 +310,29 @@
   "securityDefinitions": {
     "ApiKey": {
       "type": "apiKey",
-      "name": "ApiKey",
-      "description": "The ApiKey should be supplied in request Authorization header. Ex: Authorization: ApiKey YOUR_API_KEY",
+      "name": "apikey",
+      "description": "The ApiKey should be supplied in request Authorization header. Ex: Authorization: apikey YOUR_API_KEY",
       "in": "header"
     }
   },
   "definitions": {
-    "AnalyzeFaceImageModel": {
-      "type": "object",
-      "properties": {
-	  "ClientCode": {
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
-        "Face": {
-          "$ref": "#/definitions/FaceRequest"
-        }
-      }
-    },
-    
 	"RegisterPersonModel": {
       "type": "object",
       "properties": {
-		"ClientCode": {
-		 
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-		 
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
 		"Person": {
 	
          "$ref": "#/definitions/PersonInformation",
-          "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
+          "description": "Information about the person to be registered. If no PersonID is supplied, the API will generate one"
         },
         "ServiceProvider": {
 		 
          "$ref": "#/definitions/ServiceProvider",
-		 "description": "Information about the service provider executing the delete operation."
+		 "description": "Information about the service provider executing the operation."
         },
 		"Transaction": {
 		
-         "$ref": "#/definitions/Transaction"
+         "$ref": "#/definitions/Transaction",
+		 "description": "Information about the request."
         },
         "Faces": {
 		 "type": "array",
@@ -333,29 +346,20 @@
     "FaceSearchPersonModel": {
       "type": "object",
      "properties": {
-	  "ClientCode": {
-		
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-		 
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
 		"Person": {
 		
-         "$ref": "#/definitions/Person",
+         "$ref": "#/definitions/PersonInformation",
           "description": "Information about the person to be removed. Supply PersonID if the search should be 1:1"
         },
         "ServiceProvider": {
 		
          "$ref": "#/definitions/ServiceProvider",
-		 "description": "Information about the service provider executing the delete operation."
+		 "description": "Information about the service provider executing the operation."
         },
 		"Transaction": {
 		
-         "$ref": "#/definitions/Transaction"
+         "$ref": "#/definitions/Transaction",
+		 "description": "Information about the request."
         },
         "Face": {
           "$ref": "#/definitions/FaceRequest"
@@ -366,16 +370,8 @@
     "DeletePersonModel": {
       "type": "object",
       "properties": {
-	   "ClientCode": {
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
         "Person": {
-         "$ref": "#/definitions/Person",
+         "$ref": "#/definitions/PersonInformation",
           "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
         },
         "ServiceProvider": {
@@ -383,7 +379,8 @@
 		 "description": "Information about the service provider executing the delete operation."
         },
 		"Transaction": {
-         "$ref": "#/definitions/Transaction"
+         "$ref": "#/definitions/Transaction",
+		 "description": "Information about the request."
         }
       }
     },
@@ -391,17 +388,9 @@
 	"GetPersonModel": {
       "type": "object",
       "properties": {
-	   "ClientCode": {
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
         "Person": {
-         "$ref": "#/definitions/Person",
-          "description": "Information about the person to be removed. Only the PersonID is used by SimpleID"
+         "$ref": "#/definitions/PersonInformation",
+          "description": "Information about the person to be returned. Only the PersonID is used by SimpleID"
         },
       }
     },
@@ -410,14 +399,7 @@
 	"CheckIDPersonModel": {
       "type": "object",
       "properties": {
-	   "ClientCode": {
-          "type": "string",
-          "description": "The client code. This information identifies the owner of the application making the request. "
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The subdivision of the database. The same client can have multiples accounts within SimpleID and each of them will be considered a separated database."
-        },
+	   
         "Person": {
          "$ref": "#/definitions/PersonInformation",
           "description": "Information about the person. Only the PersonID is used by SimpleID"
@@ -578,7 +560,7 @@
       "properties": {
         "TransactionID": {
           "type": "string",
-          "description": "Unique ID of the transaction. This field is generated ty SimpleID"
+          "description": "Unique ID of the transaction. This field is generated ty SimpleID and will be ignored for requests."
         },
 		"ExternalCode": {
           "type": "string",
@@ -664,32 +646,6 @@
       }
     },
 	
-    "SimpleIDAPIDeleteResponse": {
-      "type": "object",
-      "properties": {
-        "ReturnCode": {
-          "type": "integer",
-          "description": "Return code"
-        },
-        "Message": {
-          "type": "string",
-          "description": "Message describing the return code"
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The account used to perform the operation"
-        },
-		"TransactionID": {
-          "type": "string",
-          "description": "Unique identifier of the request"
-        },
-        "PersonID": {
-          "type": "string",
-          "description": "Unique identifier of the person"
-        },
-      }
-    },
-	
 	 "SimpleIDAPISearchResponse": {
       "type": "object",
       "properties": {
@@ -722,6 +678,34 @@
       }
     },
 	
+    "SimpleIDAPIDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "ReturnCode": {
+          "type": "integer",
+          "description": "Return code"
+        },
+        "Message": {
+          "type": "string",
+          "description": "Message describing the return code"
+        },
+		"AccountCode": {
+          "type": "string",
+          "description": "The account used to perform the operation"
+        },
+		"TransactionID": {
+          "type": "string",
+          "description": "Unique identifier of the request"
+        },
+        "PersonID": {
+          "type": "string",
+          "description": "Unique identifier of the person that was deleted"
+        },
+      }
+    },
+	
+	
+	
 	"SimpleIDAPIGetPersonResponse": {
       "type": "object",
       "properties": {
@@ -738,29 +722,7 @@
           "description": "The account used to perform the operation"
         },
 		"Person": {
-		 "$ref": "#/definitions/Person"
-        }
-      }
-    },
-	
-    "SimpleIDAPIFaceAnalysisResponse": {
-      "type": "object",
-      "properties": {
-        "ReturnCode": {
-          "type": "integer",
-          "description": "Return code"
-
-        },
-        "Message": {
-          "type": "string",
-          "description": "Message describing the return code"
-        },
-		"AccountCode": {
-          "type": "string",
-          "description": "The account used to perform the operation"
-        },
-        "ProcessedFace": {
-          "$ref": "#/definitions/ProcessedFace"
+		 "$ref": "#/definitions/PersonResponse"
         }
       }
     },
@@ -783,7 +745,7 @@
       }
     },
 	
-	"Person": {
+	"PersonResponse": {
       "type": "object",
       "properties": {
 	   "PersonInformation": {
@@ -812,107 +774,6 @@
         "Person": {
          "$ref": "#/definitions/PersonInformation",
         },
-      }
-    },
-	
-    "ProcessedFace": {
-      "type": "object",
-      "properties": {
-        "Yaw": {
-          "type": "integer",
-          "description": "Head pose yaw angle"
-        },
-        "Pitch": {
-          "type": "integer",
-          "description": "Head pose pitch angle"
-        },
-        "Roll": {
-          "type": "integer",
-          "description": "Head pose roll angle"
-        },
-        "Brightness": {
-          "type": "integer",
-          "description": "Brightness level. -1 for Too Dark, 0 for Good and 1 for Too Bright"
-        },
-        "IsSharpnessOK": {
-          "type": "boolean",
-          "description": "Indicates whether the sharpness level is good or not"
-        },
-        "IsMouthClosed": {
-          "type": "boolean",
-          "description": "Indicates if the mouth is closed"
-        },
-		"IsGazeOK": {
-          "type": "boolean",
-          "description": "Indicates if person is looking forward"
-        },
-		"IsShadowAcrossFaceOK": {
-          "type": "boolean",
-          "description": "Indicates the face has no shadow accros. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
-        },
-		"HasUniformBackground": {
-          "type": "boolean",
-          "description": "Indicates the background has a uniform color. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
-        },
-		"IsWearingGlasses": {
-          "type": "boolean",
-          "description": "Indicates if the person is wearing glasses. (NOT AVAILABLE ON THE CURRENT VERSION OF THE API)"
-        },
-		
-        "Rectangle": {
-          "description": "Location of the biggest face (if any)",
-          "$ref": "#/definitions/Rectangle"
-        },
-        "CropRectangle": {
-          "description": "Rectangle indicating the crop region according to ISO 19794-5 format Full Frontal. If it is not possible to reach the standard requirements, the best possible crop will be returned",
-          "$ref": "#/definitions/Rectangle"
-        },
-        "LeftEye": {
-          "description": "Left eye information",
-          "$ref": "#/definitions/Eye"
-        },
-        "RightEye": {
-          "description": "Right eye information",
-          "$ref": "#/definitions/Eye"
-        }
-      }
-    },
-    "Rectangle": {
-      "type": "object",
-      "properties": {
-        "X": {
-          "type": "integer",
-          "description": "Top left X coordinate"
-        },
-        "Y": {
-          "type": "integer",
-          "description": "Top left Y coordinate"
-        },
-        "Width": {
-          "type": "integer",
-          "description": "Width"
-        },
-        "Height": {
-          "type": "integer",
-          "description": "Height"
-        }
-      }
-    },
-    "Eye": {
-      "type": "object",
-      "properties": {
-        "X": {
-          "type": "integer",
-          "description": "Eye position X coordinate"
-        },
-        "Y": {
-          "type": "integer",
-          "description": "Eye position Y coordinate"
-        },
-        "Open": {
-          "type": "boolean",
-          "description": "Indicates wheter the eye is open or not"
-        }
       }
     }
   }
