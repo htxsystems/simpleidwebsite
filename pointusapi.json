@@ -1,0 +1,135 @@
+{
+  "swagger": "2.0",
+  "info": {
+  "description": "Essa é a especificação da API de cashback do Pointus, o CRM da HTX Systems.",
+    "version": "1.0.0",
+    "title": "Pointus CRM API"
+  },
+  "host": "",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/cashback/{cpf}": {
+      "get": {
+        "tags": [
+          "Cashback"
+        ],
+        "summary": "Consulta saldo disponível de um cliente através do CPF",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cpf",
+            "in": "path",
+            "description": "CPF",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ClienteSaldoDTO"
+            }
+          }
+        }
+      }
+    },
+    "/api/cashback/resgatar": {
+      "post": {
+        "tags": [
+          "Cashback"
+        ],
+        "summary": "Resgata um voucher",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ResgateVoucherDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RetornoResgateVoucherDTO"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ClienteSaldoDTO": {
+      "description": "Informações básicas do cliente",
+      "type": "object",
+      "properties": {
+        "CPF": {
+          "description": "CPF",
+          "type": "string"
+        },
+        "PrimeiroNome": {
+          "description": "Primeiro nome",
+          "type": "string"
+        },
+        "Pontos": {
+          "format": "int32",
+          "description": "Saldo de pontos",
+          "type": "integer"
+        },
+        "ValorVoucherDisponivel": {
+          "format": "double",
+          "description": "Valor do voucher disponível para troca",
+          "type": "number"
+        }
+      }
+    },
+    "ResgateVoucherDTO": {
+      "description": "Informações do resgate a ser realizado",
+      "type": "object",
+      "properties": {
+        "CPF": {
+          "description": "CPF do cliente",
+          "type": "string"
+        },
+        "Senha": {
+          "description": "Senha do cliente (opcional, dependendo da configuração do lojista)",
+          "type": "string"
+        },
+        "ValorVoucher": {
+          "format": "double",
+          "description": "Valor do voucher a ser resgatado",
+          "type": "number"
+        }
+      }
+    },
+    "RetornoResgateVoucherDTO": {
+      "description": "Informações sobre o resgate efetuado",
+      "type": "object",
+      "properties": {
+        "CPF": {
+          "description": "CPF do cliente",
+          "type": "string"
+        },
+        "ValorResgatado": {
+          "format": "double",
+          "description": "Valor resgatado",
+          "type": "number"
+        }
+      }
+    }
+  }
+}
