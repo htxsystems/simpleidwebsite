@@ -74,8 +74,8 @@
   },
   "securityDefinitions": {
     "ApiKey": {
-      "type": "apiKey",
-      "name": "apikey",
+      "type": "ApiKey",
+      "name": "Apikey",
       "description": "A ApiKey deverá ser enviada em um header da requisição HTTP Ex: ApiKey YOUR_API_KEY",
       "in": "header"
     }
