@@ -35,6 +35,12 @@
             "schema": {
               "$ref": "#/definitions/ClienteSaldoDTO"
             }
+          },
+		  "400": {
+            "description": "Erro na requisição",
+            "schema": {
+              "$ref": "#/definitions/RetornoErroDTO"
+            }
           }
         }
       }
@@ -66,6 +72,12 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/RetornoResgateVoucherDTO"
+            }
+          },
+		  "400": {
+            "description": "Erro na requisição",
+            "schema": {
+              "$ref": "#/definitions/RetornoErroDTO"
             }
           }
         }
@@ -145,6 +157,21 @@
           "description": "Valor resgatado",
           "type": "number"
         }
+      }
+    },
+	"RetornoErroDTO": {
+      "description": "Informação do erro ocorrido",
+      "type": "object",
+      "properties": {
+        "Codigo": {
+		  "format": "int32",
+          "description": "Código de erro. Consultar tabela.",
+          "type": "number"
+        },
+         "Mensagem": {
+          "description": "Mensagem descritiva do código de erro",
+          "type": "string"
+        },
       }
     }
   }
