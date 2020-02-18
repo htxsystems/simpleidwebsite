@@ -72,6 +72,14 @@
       }
     }
   },
+  "securityDefinitions": {
+    "ApiKey": {
+      "type": "apiKey",
+      "name": "apikey",
+      "description": "A ApiKey deverá ser enviada em um header da requisição HTTP Ex: ApiKey YOUR_API_KEY",
+      "in": "header"
+    }
+  },
   "definitions": {
     "ClienteSaldoDTO": {
       "description": "Informações básicas do cliente",
@@ -107,6 +115,14 @@
         },
         "Senha": {
           "description": "Senha do cliente (opcional, dependendo da configuração do lojista)",
+          "type": "string"
+        },
+		"CodigoLoja": {
+          "description": "Código da loja na qual o resgate está sendo realizado",
+          "type": "string"
+        },
+		"CodigoPDV": {
+          "description": "Código do PDV no qual o resgate está sendo realizado",
           "type": "string"
         },
         "ValorVoucher": {
